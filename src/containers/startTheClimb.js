@@ -15,6 +15,11 @@ class StartTheClimb extends Component {
 		};
 		// Following binding required to make 'this' work in the callback
 		this.startClimb= this.startClimb.bind(this);
+		console.log('load = '+props.location.query.load);
+		if (props.location.query.load!==undefined) {
+		  console.log('StartTheClimb autostart');
+		  setTimeout(this.startClimb, 200);
+		}
 	}
 
 	render() {

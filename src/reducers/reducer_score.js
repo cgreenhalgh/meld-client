@@ -42,8 +42,8 @@ const vrvOptions = {
 		ignoreLayout:true,
 		adjustPageHeight:true,
 		scale:scale,
-		pageHeight: 1000*100/scale,
-		pageWidth: 700*100/scale
+		pageHeight: 1200*100/scale,
+		pageWidth: 760*100/scale
 };
 
 export default function(state = {publishedScores: {}, conceptualScores: {}, MEI: {}, SVG: {}, componentTargets: {}, scoreMapping: {}, pageNum: 1, pageCount: 0, triggerNextSession: ""}, action) { 

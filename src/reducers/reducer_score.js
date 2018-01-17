@@ -39,8 +39,8 @@ const vrvOptions = {
                 adjustPageHeight: true,
                 scale: 36 
 			*/
-		ignoreLayout:true,
-		adjustPageHeight:true,
+		ignoreLayout:1,//true,//1
+		adjustPageHeight:1,//true,//1
 		scale:scale,
 		pageHeight: 760*100/scale,
 		pageWidth: 1200*100/scale
@@ -51,12 +51,13 @@ export default function(state = {publishedScores: {}, conceptualScores: {}, MEI:
 	const pageCount = vrvTk.getPageCount();
 	switch(action.type) {
 	case FETCH_SCORE:
+        vrvTk.setOptions(vrvOptions);
         svg = vrvTk.renderData(action.payload.data, vrvOptions);
 		return update(state, {
 			SVG: { $merge: { [action.payload.config.url]: svg } },
 			MEI: { $merge: { [action.payload.config.url]: action.payload.data } } ,
 			pageNum: {$set: 1} ,
-			pageCount: { $set: pageCount }
+			pageCount: { $set: vrvTk.getPageCount() }
 		});
 
     case FETCH_RIBBON_CONTENT:
@@ -154,6 +155,7 @@ export default function(state = {publishedScores: {}, conceptualScores: {}, MEI:
 		if(action.payload.pageNum === 1) { 
 			return state;
 		} else { 
+			vrvTk.setOptions(vrvOptions);
 			vrvTk.loadData(action.payload.data);
 			svg = vrvTk.renderPage(action.payload.pageNum-1, vrvOptions);
 		}
@@ -175,6 +177,7 @@ export default function(state = {publishedScores: {}, conceptualScores: {}, MEI:
 			console.log("TRIGGERING")
 			return update(state, { triggerNextSession: { $set: true  } });
 		} else { 
+			vrvTk.setOptions(vrvOptions);
 			vrvTk.loadData(action.payload.data);
 			svg = vrvTk.renderPage(action.payload.pageNum+1, vrvOptions);
 
@@ -200,6 +203,7 @@ export default function(state = {publishedScores: {}, conceptualScores: {}, MEI:
 			console.log("SCORE_PREV_PAGE attempted on first page -- ignoring!");
 			return state;
 		} else { 
+			vrvTk.setOptions(vrvOptions);
 			vrvTk.loadData(action.payload.data);
 			svg = vrvTk.renderPage(action.payload.pageNum-1, vrvOptions);
 
@@ -222,6 +226,7 @@ export default function(state = {publishedScores: {}, conceptualScores: {}, MEI:
 		}
 		const frag=action.payload.target.split("#")[1]
 		const pageNum = vrvTk.getPageWithElement(frag)
+		vrvTk.setOptions(vrvOptions);
 		vrvTk.loadData(action.payload.data)
 		svg = vrvTk.renderPage(pageNum)
 		return update(state, {
